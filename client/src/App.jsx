@@ -23,7 +23,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Banner />} />
-        <Route path="/hospitality" element={<Banner />} />
         <Route path="/doctor" element={<Doctor />} />
         <Route path="/patient" element={<Patient />} />
          {/* Other routes */}
