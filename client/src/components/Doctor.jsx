@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Doctor() {
@@ -15,7 +15,7 @@ function Doctor() {
 
   // Inside your component
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const [file, setFile] = useState(null);
 
