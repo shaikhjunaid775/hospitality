@@ -1,35 +1,34 @@
-import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import PrescriptionForm from "./PrescriptionForm";
 
 const PatientDashboard = () => {
   const [showModal, setShowModal] = useState(false);
-
   const [patients, setPatients] = useState([]);
-
-  const [consultations, setConsultations] = useState([]);
   const [selectedConsultationId, setSelectedConsultationId] = useState(null);
-  const [showPrescriptionForm, setShowPrescriptionForm] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/consultations')
-      .then(response => setConsultations(response.data))
+      .then(response => {
+        console.log('Consultations:', response.data);
+        // Uncomment the next line if you plan to use consultations later
+        // setConsultations(response.data);
+      })
       .catch(error => console.error('Error fetching consultations', error));
   }, []);
 
   const openPrescriptionForm = (id) => {
     setSelectedConsultationId(id);
-    setShowPrescriptionForm(true);
+    setShowModal(true);
   };
 
   const closePrescriptionForm = () => {
-    setShowPrescriptionForm(false);
+    setShowModal(false);
     setSelectedConsultationId(null);
   };
 
   useEffect(() => {
-    const fetchPatient = async () => {
+    const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/patient");
         setPatients(response.data);
@@ -39,12 +38,14 @@ const PatientDashboard = () => {
       }
     };
 
-    fetchPatient();
+    fetchPatients();
   }, []);
+
 
   return (
     <>
-      <div className="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+      <h3>Patients</h3>
+      <div className="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {patients.map((patient) => (
           <div
             key={patient._id}
@@ -64,30 +65,27 @@ const PatientDashboard = () => {
                   {patient.name}
                 </p>
                 <p className="text-slate-500 font-medium">
-                  Age :{patient.age}
-                </p>
-                <p className="text-slate-500 font-medium">
-                  {patient.age}
+                  Age: {patient.age}
                 </p>
               </div>
               <button
                 type="button"
-                onClick={() => setShowModal(true)}
+                onClick={() => openPrescriptionForm(patient._id)}
                 className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
               >
                 Prescription
               </button>
             </div>
-            
           </div>
         ))}
       </div>
 
-      {showModal ? (
-        <>
-          <PrescriptionForm  openPrescriptionForm={openPrescriptionForm} closePrescriptionForm={closePrescriptionForm} />
-        </>
-      ) : null}
+      {showModal && (
+        <PrescriptionForm
+          selectedConsultationId={selectedConsultationId}
+          closePrescriptionForm={closePrescriptionForm}
+        />
+      )}
     </>
   );
 };

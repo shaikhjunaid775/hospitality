@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ function Patient() {
       alert("Patient data submitted successfully");
 
       // Navigate to the desired route after successful login
-      navigate("/DoctorDashboard"); // Replace with your target route
+      navigate("/hospitality/patient"); // Replace with your target route
     } catch (error) {
       console.error("There was an error submitting the form!", error);
       alert("Failed to submit patient data");
@@ -62,7 +62,7 @@ function Patient() {
       alert(response.data.message);
 
       // Navigate to the desired route after successful login
-      navigate("/DoctorDashboard"); // Replace with your target route
+      navigate("/hospitality/PatientDashboard"); // Replace with your target route
       // Handle successful login, e.g., redirect or store token
     } catch (err) {
       console.error("Login failed:", err);
@@ -130,7 +130,7 @@ function Patient() {
                   <div className="flex min-h-full flex-col justify-center px-6 py-2 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                       <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in
+                        Patient Sign in
                       </h2>
                     </div>
 
@@ -204,7 +204,7 @@ function Patient() {
                   <div className="flex min-h-full flex-col justify-center px-6 py-2 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                       <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign up
+                        Patient Sign up
                       </h2>
                     </div>
 

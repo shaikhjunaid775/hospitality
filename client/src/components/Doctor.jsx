@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import profile from "../assets/images/default-user.png"
 
 function Doctor() {
   const [openTab, setOpenTab] = useState(1); // 1 for login, 2 for signup
@@ -17,7 +18,7 @@ function Doctor() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(profile);
 
   const handlePreview = (e) => {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -40,7 +41,7 @@ function Doctor() {
       await axios.post("http://localhost:5000/api/doctors", formData);
       alert("Doctor data submitted successfully");
       // Navigate to the desired route after successful login
-      navigate("/DoctorDashboard"); // Replace with your target route
+      navigate("/hospitality/Doctor"); // Replace with your target route
     } catch (error) {
       console.error("There was an error submitting the form!", error);
       alert("Failed to submit doctor data");
@@ -60,7 +61,7 @@ function Doctor() {
       );
       alert(response.data.message);
       // Navigate to the desired route after successful login
-      navigate("/DoctorDashboard"); // Replace with your target route
+      navigate("/hospitality/DoctorDashboard"); // Replace with your target route
       // Handle successful login, e.g., redirect or store token
     } catch (err) {
       console.error("Login failed:", err);
@@ -127,7 +128,7 @@ function Doctor() {
                   <div className="flex min-h-full flex-col justify-center px-6 py-2 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                       <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in
+                      Doctor Sign in
                       </h2>
                     </div>
 
@@ -188,7 +189,7 @@ function Doctor() {
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                           >
-                            Sign in
+                             Sign in
                           </button>
                         </div>
                       </form>
@@ -199,7 +200,7 @@ function Doctor() {
                   <div className="flex min-h-full flex-col justify-center px-6  lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                       <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign up
+                        Doctor Sign up
                       </h2>
                     </div>
 
@@ -377,6 +378,7 @@ function Doctor() {
           </div>
         </div>
       </div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </div>
   );
 }
