@@ -1,5 +1,6 @@
 import  { useState } from "react";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 import { useNavigate } from "react-router-dom";
 
@@ -41,13 +42,15 @@ function Patient() {
     
     try {
       await axios.post("http://localhost:5000/api/patients", formData);
-      alert("Patient data submitted successfully");
+      toast.success("Patient data submitted successfully");
+      
 
       // Navigate to the desired route after successful login
       navigate("/hospitality/patient"); // Replace with your target route
     } catch (error) {
-      console.error("There was an error submitting the form!", error);
-      alert("Failed to submit patient data");
+      
+      toast.error("There was an error submitting the form!", error);
+      
     }
   };
 
@@ -59,14 +62,14 @@ function Patient() {
         email: loginEmail,
         password: loginPassword
       });
-      alert(response.data.message);
+          // Show success toast
+    toast.success(response.data.message);
 
       // Navigate to the desired route after successful login
       navigate("/hospitality/PatientDashboard"); // Replace with your target route
       // Handle successful login, e.g., redirect or store token
     } catch (err) {
-      console.error("Login failed:", err);
-      setError(err.response?.data?.error || "Server error");
+      toast.error(err.response?.data?.error || "Server error");
     }
   };
 
@@ -139,7 +142,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="login-email"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Email address
                           </label>
@@ -152,7 +155,7 @@ function Patient() {
                               onChange={(e) => setLoginEmail(e.target.value)}
                               value={loginEmail}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -161,7 +164,7 @@ function Patient() {
                           <div className="flex items-center justify-between">
                             <label
                               htmlFor="login-password"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                              className="block px-2 text-sm font-medium leading-6 text-gray-900"
                             >
                               Password
                             </label>
@@ -175,7 +178,7 @@ function Patient() {
                               onChange={(e) => setLoginPassword(e.target.value)}
                               value={loginPassword}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -213,10 +216,35 @@ function Patient() {
                         className="space-y-6"
                         onSubmit={handlePatientSubmit}
                       >
+                         <div className="flex justify-center ">
+                          <div className="flex items-center space-x-6">
+                            <div className="shrink-0">
+                              <img
+                                id="preview_img"
+                                className="h-16 w-16 object-cover rounded-full"
+                                alt="Current profile photo"
+                                src={file}
+                              />
+                            </div>
+                            <label className="block px-2">
+                              <input
+                                type="file"
+                                className="block px-2 w-full text-sm text-slate-500
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-full file:border-0
+        file:text-sm file:font-semibold
+        file:bg-violet-50 file:text-violet-700
+        hover:file:bg-violet-100
+      "
+                                onChange={handlePreview}
+                              />
+                            </label>
+                          </div>
+                        </div>
                         <div>
                           <label
                             htmlFor="name"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Name
                           </label>
@@ -228,7 +256,7 @@ function Patient() {
                               onChange={(e) => setName(e.target.value)}
                               value={name}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -236,7 +264,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="age"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Age
                           </label>
@@ -248,7 +276,7 @@ function Patient() {
                               onChange={(e) => setAge(e.target.value)}
                               value={age}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -256,7 +284,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="email"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Email address
                           </label>
@@ -268,7 +296,7 @@ function Patient() {
                               onChange={(e) => setEmail(e.target.value)}
                               value={email}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -276,7 +304,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="phone"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Phone
                           </label>
@@ -288,7 +316,7 @@ function Patient() {
                               onChange={(e) => setPhone(e.target.value)}
                               value={phone}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -296,7 +324,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="surgeryHistory"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Surgery History
                           </label>
@@ -310,7 +338,7 @@ function Patient() {
                               }
                               value={surgeryHistory}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -318,7 +346,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="illnessHistory"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Illness History
                           </label>
@@ -332,7 +360,7 @@ function Patient() {
                               }
                               value={illnessHistory}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -340,7 +368,7 @@ function Patient() {
                         <div>
                           <label
                             htmlFor="password"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Password
                           </label>
@@ -352,30 +380,12 @@ function Patient() {
                               onChange={(e) => setPassword(e.target.value)}
                               value={password}
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
 
-                        <div>
-                          <label
-                            htmlFor="profileImage"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Profile Image
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              id="profileImage"
-                              name="profileImage"
-                              type="file"
-                              accept="image/*"
-                              onChange={handlePreview}
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
-                          </div>
-                        </div>
-
+                        
                         <div>
                           <button
                             type="submit"

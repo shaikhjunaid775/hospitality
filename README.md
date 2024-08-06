@@ -19,16 +19,16 @@ This project is designed to manage patient and doctor registrations, logins, and
 - **`/patient`**
   - **Description:** Handles registration and login for patients.
   - **Endpoints:**
-    - `POST /patient/register` - Register a new patient.
-    - `POST /patient/login` - Log in an existing patient.
+    - `POST /patient/` - Register a new patient.
+    - `POST /patient/` - Log in an existing patient.
 
 ### Doctor Routes
 
 - **`/doctor`**
   - **Description:** Handles registration and login for doctors.
   - **Endpoints:**
-    - `POST /doctor/register` - Register a new doctor.
-    - `POST /doctor/login` - Log in an existing doctor.
+    - `POST /doctor/` - Register a new doctor.
+    - `POST /doctor/` - Log in an existing doctor.
 
 ### Dashboards
 
@@ -39,7 +39,7 @@ This project is designed to manage patient and doctor registrations, logins, and
     - Access patient details.
     - View and manage consultations.
     - **Popup for Consultations:**
-      - Displays a list of consultations submitted by patients.
+      - Displays a list of patients.
       - Includes a form for writing prescriptions.
 
 - **`/PatientDashboard`**

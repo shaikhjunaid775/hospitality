@@ -13,12 +13,17 @@ import Doctor from "./components/Doctor";
 import Patient from "./components/Patient";
 import DoctorDashboard from "./components/DoctorDashboard";
 import PatientDashboard from "./components/PateintDashboard";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
     <>
       <Router>
         <Navbar />
+        
+        <ToastContainer />
         
         <Routes>
           <Route path="/" element={<Banner />} />

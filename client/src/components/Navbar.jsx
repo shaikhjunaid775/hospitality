@@ -6,23 +6,7 @@ import { useEffect, useState } from 'react';
 function Navbar() {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    async function fetchUser() {
-      const loggedInUser = await getUser();
-      setUser(loggedInUser);
-    }
-    fetchUser();
-  }, []);
-
-  const getUser = async () => {
-    try {
-      const response = await axios.get('/api/protected-route', { withCredentials: true });
-      return response.data.user;
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      return null;
-    }
-  };
+  
 
   const handleLogout = async () => {
     try {

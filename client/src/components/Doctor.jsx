@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import profile from "../assets/images/default-user.png"
+import { toast } from "react-toastify";
 
 function Doctor() {
   const [openTab, setOpenTab] = useState(1); // 1 for login, 2 for signup
@@ -13,6 +14,8 @@ function Doctor() {
   const [registerPhone, setRegisterPhone] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerExperience, setRegisterExperience] = useState("");
+
+  const [consultations, setConsultations] = useState([]);
 
   // Inside your component
   const navigate = useNavigate();
@@ -39,12 +42,12 @@ function Doctor() {
 
     try {
       await axios.post("http://localhost:5000/api/doctors", formData);
-      alert("Doctor data submitted successfully");
+      toast.success("Doctor data submitted successfully");
       // Navigate to the desired route after successful login
       navigate("/hospitality/Doctor"); // Replace with your target route
     } catch (error) {
-      console.error("There was an error submitting the form!", error);
-      alert("Failed to submit doctor data");
+      toast.error("There was an error submitting the form!", error);
+      
     }
   };
 
@@ -59,15 +62,30 @@ function Doctor() {
           password: loginPassword
         }
       );
-      alert(response.data.message);
+      toast.success(response.data.message);
       // Navigate to the desired route after successful login
       navigate("/hospitality/DoctorDashboard"); // Replace with your target route
       // Handle successful login, e.g., redirect or store token
     } catch (err) {
-      console.error("Login failed:", err);
+      toast.error("Login failed:", err);
       setError(err.response?.data?.error || "Server error");
     }
   };
+
+  useEffect(() => {
+    const fetchConsultations = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/:id/consultations');
+        setConsultations(response.data);
+      } catch (err) {
+        console.error("Error fetching consultations:", err);
+        setError("Failed to fetch consultations.");
+        toast.error("Failed to fetch consultations.");
+      }
+    };
+
+    fetchConsultations();
+  }, []);
 
   const color = "green";
   return (
@@ -137,7 +155,7 @@ function Doctor() {
                         <div>
                           <label
                             htmlFor="email"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Email address
                           </label>
@@ -150,7 +168,7 @@ function Doctor() {
                               onChange={(e) => setLoginEmail(e.target.value)}
                               autoComplete="email"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -159,7 +177,7 @@ function Doctor() {
                           <div className="flex items-center justify-between">
                             <label
                               htmlFor="password"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                              className="block px-2 text-sm font-medium leading-6 text-gray-900"
                             >
                               Password
                             </label>
@@ -179,7 +197,7 @@ function Doctor() {
                               onChange={(e) => setLoginPassword(e.target.value)}
                               autoComplete="current-password"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -216,10 +234,10 @@ function Doctor() {
                                 src={file}
                               />
                             </div>
-                            <label className="block">
+                            <label className="block px-2">
                               <input
                                 type="file"
-                                className="block w-full text-sm text-slate-500
+                                className="block px-2 w-full text-sm text-slate-500
         file:mr-4 file:py-2 file:px-4
         file:rounded-full file:border-0
         file:text-sm file:font-semibold
@@ -234,7 +252,7 @@ function Doctor() {
                         <div>
                           <label
                             htmlFor="name"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Name
                           </label>
@@ -247,14 +265,14 @@ function Doctor() {
                               onChange={(e) => setRegisterName(e.target.value)}
                               autoComplete="name"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
                         <div>
                           <label
                             htmlFor="speciality"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             speciality
                           </label>
@@ -269,14 +287,14 @@ function Doctor() {
                               }
                               autoComplete="speciality"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
                         <div>
                           <label
                             htmlFor="email"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Email address
                           </label>
@@ -289,14 +307,14 @@ function Doctor() {
                               onChange={(e) => setRegisterEmail(e.target.value)}
                               autoComplete="email"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
                         <div>
                           <label
                             htmlFor="phone"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Phone
                           </label>
@@ -309,14 +327,14 @@ function Doctor() {
                               onChange={(e) => setRegisterPhone(e.target.value)}
                               autoComplete="phone"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
                         <div>
                           <label
                             htmlFor="yoe"
-                            className="block text-sm font-medium leading-6 text-gray-900"
+                            className="block px-2 text-sm font-medium leading-6 text-gray-900"
                           >
                             Years of Experience
                           </label>
@@ -331,7 +349,7 @@ function Doctor() {
                               }
                               autoComplete="yoe"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
@@ -340,7 +358,7 @@ function Doctor() {
                           <div className="flex items-center justify-between">
                             <label
                               htmlFor="password"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                              className="block px-2 text-sm font-medium leading-6 text-gray-900"
                             >
                               Password
                             </label>
@@ -356,7 +374,7 @@ function Doctor() {
                               }
                               autoComplete="current-password"
                               required
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
